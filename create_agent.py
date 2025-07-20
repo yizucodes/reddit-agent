@@ -197,7 +197,7 @@ def main():
         
         elif choice == "2":
             post = input("Original post to comment on: ").strip()
-            response_type = input("Response type (helpful/supportive/humorous): ").strip() or "helpful"
+            response_type = input("Response type (helpful/supportive/humorous): ").strip() or "humorous"
             max_words = int(input("Max words (default 15): ") or "15")
             
             print(f"\n🧠 Generating {response_type} comment...")
