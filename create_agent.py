@@ -51,7 +51,7 @@ class RedditAgent:
         topic: str,
         subreddit: str,
         post_type: str = "text_post",
-        max_words: int = 200
+        max_words: int = 100
     ) -> str:
         """
         Generate a Reddit post
@@ -116,16 +116,9 @@ class RedditAgent:
     
     def _build_post_prompt(self, topic: str, subreddit: str, post_type: str, max_words: int) -> str:
         """Build prompt for post generation"""
-        post_guidance = {
-            "text_post": "Create an engaging text post with a compelling title",
-            "story": "Tell a personal story with clear narrative arc",
-            "advice": "Provide detailed, actionable advice",
-            "question": "Ask an engaging question that encourages discussion"
-        }
         
-        # Special handling for r/RoastMe
-        if subreddit.lower() in ['roastme', 'roast_me']:
-            prompt = f"""Create a r/RoastMe post about "{topic}".
+        # Default r/RoastMe style prompt for all post generation
+        prompt = f"""Create a r/RoastMe post about "{topic}".
 
         CRITICAL: Write in FIRST PERSON as someone asking to BE roasted, NOT advice on how to roast others.
 
@@ -147,25 +140,6 @@ class RedditAgent:
         - "Haven't left my apartment in 5 days. Either I'm becoming a hermit or society is avoiding me. Probably both. Make me regret posting this."
 
         Your r/RoastMe post (written as yourself asking to be roasted):"""
-            return prompt
-        
-        # Regular subreddit handling
-        prompt = f"""Create a Reddit post for r/{subreddit} about "{topic}".
-
-Post Type: {post_guidance.get(post_type, 'Create an engaging post')}
-
-Requirements:
-- Include a compelling title
-- Use Reddit formatting (**bold**, bullet points where appropriate)
-- Add engaging content that provides value
-- End with something that encourages comments
-- Follow r/{subreddit} culture and rules
-- Keep the post within {max_words} words
-
-Format as:
-Title: [Your title here]
-
-Content: [Your post content here]"""
 
         return prompt
     
@@ -215,7 +189,7 @@ def main():
             topic = input("Topic: ").strip()
             subreddit = input("Subreddit: ").strip()
             post_type = input("Post type (text_post/story/advice/question): ").strip() or "text_post"
-            max_words = int(input("Max words (default 200): ") or "200")
+            max_words = int(input("Max words (default 100): ") or "100")
             
             print("\n🧠 Generating post...")
             result = agent.generate_post(topic, subreddit, post_type, max_words)
